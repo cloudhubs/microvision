@@ -123,6 +123,8 @@ public class Graph : MonoBehaviour
         return centroid;
     }
 
+
+
     void LoadGMLFromFile(TextAsset f){
         string[] lines = f.text.Split('\n');
         int currentobject = -1; // 0 = graph, 1 = node, 2 = edge
