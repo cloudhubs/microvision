@@ -12,9 +12,12 @@ public class Graph : MonoBehaviour
 {
     public GameObject nodepf;
     public GameObject edgepf;
+    public GameObject requestpf;
     public float width;
     public float length;
     public float height;
+
+    private RequestPip currentRequest = null;
 
     Dictionary<string, Node> nodes;
     ISet<Node> connectedNodes = new HashSet<Node>();
@@ -105,12 +108,23 @@ public class Graph : MonoBehaviour
                 unconnectedGraph.gameObject.transform.localPosition = new Vector3(xMax + 5f, 0f, 0f);
                 if (Input.GetKeyDown("v"))
                 {
-                    Vector3 otherSum = new Vector3(0f, 0f, 0f);
-                    foreach (Node n in connectedNodes)
+                    if (currentRequest == null)
                     {
-                        otherSum = otherSum + n.transform.position;
-                        Debug.Log(otherSum);
+                        List<Node> requestNodes = new List<Node>();
+                        requestNodes.Add(nodes["cms"]);
+                        requestNodes.Add(nodes["ems"]);
+                        requestNodes.Add(nodes["qms"]);
+                        requestNodes.Add(nodes["vms"]);
+                        GameObject currentRequestObject = Instantiate(requestpf, transform);
+                        currentRequest = currentRequestObject.GetComponent<RequestPip>();
+                        currentRequest.Init(requestNodes);
                     }
+                    //Vector3 otherSum = new Vector3(0f, 0f, 0f);
+                    //foreach (Node n in connectedNodes)
+                    //{
+                    //    otherSum = otherSum + n.transform.position;
+                    //    Debug.Log(otherSum);
+                    //}
                 }
             }
         }

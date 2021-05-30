@@ -58,6 +58,11 @@ public class Node : MonoBehaviour
         joints.Add(sj);
     }
 
+    public string GetLabelText()
+    {
+        return transform.GetChild(0).GetComponent<TMPro.TextMeshPro>().text;
+    }
+
     public void SetLabelText(string label)
     {
         //transform.GetChild(0).GetComponent<TextMesh>().text = label;
