@@ -17,9 +17,10 @@ public class Graph : MonoBehaviour
     public float length;
     public float height;
 
-    private RequestPip currentRequest = null;
-
+    RequestPip currentRequest = null;
+    GameObject currentRequestObject = null;
     Dictionary<string, Node> nodes;
+    Dictionary<(string, string), GameObject> edges;
     ISet<Node> connectedNodes = new HashSet<Node>();
     bool initDone = false;
     UnconnectedGraph unconnectedGraph;
@@ -29,9 +30,12 @@ public class Graph : MonoBehaviour
     {
         ProphetData data = CallProphet();
         nodes = new Dictionary<string,Node>();
+        edges = new Dictionary<(string, string), GameObject>();
         GameObject ugObject = new GameObject();
         unconnectedGraph = ugObject.AddComponent<UnconnectedGraph>() as UnconnectedGraph;
         unconnectedGraph.transform.parent = transform;
+
+        // process nodes
         for (int i = 0; i < data.communication.nodes.Count; i++)
         {
             string label = data.communication.nodes[i].label;
@@ -48,6 +52,7 @@ public class Graph : MonoBehaviour
             GameObject go = Instantiate(nodepf, transform);
             go.transform.localPosition = localInit;
             Node n = go.GetComponent<Node>();
+            n.endpoints = data.communication.nodes[i].endpoints;
             if (i == 0)
             {
                 n.anchored = true;
@@ -57,20 +62,30 @@ public class Graph : MonoBehaviour
             n.SetEdgePrefab(edgepf);
             n.SetLabelText(label);
             nodes.Add(label, n);
-            Debug.Log("calculated init: " + localInit);
-            Debug.Log("node global pos: " + n.gameObject.transform.position);
-            Debug.Log("node local pos: " + n.gameObject.transform.localPosition);
         }
+
+        // process edges
         for (int i = 0; i < data.communication.edges.Count; i++)
         {
             MsEdge edge = data.communication.edges[i];
             Node src = nodes[edge.from.label];
             Node dst = nodes[edge.to.label];
-            src.AddEdge(dst);
+            GameObject edgeObj = src.AddEdge(dst);
             connectedNodes.Add(src);
             connectedNodes.Add(dst);
+            if (!edges.ContainsKey((edge.from.label, edge.to.label)))
+            {
+                edges.Add((edge.from.label, edge.to.label), edgeObj);
+            }
         }
-        int idx = 0;
+
+        // process paths
+        foreach (MsPath path in data.communication.paths)
+        {
+            
+        }
+        
+        // handle unconnected nodes
         foreach(Node n in nodes.Values)
         {
             if (!connectedNodes.Contains(n))
@@ -80,6 +95,7 @@ public class Graph : MonoBehaviour
                 unconnectedGraph.AddNode(n);
             }
         }
+
         // send the nodes over to the menu to display in a list
         menu = GameObject.Find("ServicesMenu").GetComponent<ServicesMenu>();
         menu.InitializeServiceList(nodes);
@@ -110,12 +126,12 @@ public class Graph : MonoBehaviour
                 {
                     if (currentRequest == null)
                     {
-                        List<Node> requestNodes = new List<Node>();
-                        requestNodes.Add(nodes["cms"]);
-                        requestNodes.Add(nodes["ems"]);
-                        requestNodes.Add(nodes["qms"]);
-                        requestNodes.Add(nodes["vms"]);
-                        GameObject currentRequestObject = Instantiate(requestpf, transform);
+                        List<GameObject> requestNodes = new List<GameObject>();
+                        requestNodes.Add(nodes["cms"].gameObject);
+                        requestNodes.Add(nodes["ems"].gameObject);
+                        requestNodes.Add(nodes["qms"].gameObject);
+                        requestNodes.Add(nodes["vms"].gameObject);
+                        currentRequestObject = Instantiate(requestpf, transform);
                         currentRequest = currentRequestObject.GetComponent<RequestPip>();
                         currentRequest.Init(requestNodes);
                     }

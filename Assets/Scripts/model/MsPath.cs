@@ -6,10 +6,10 @@ using System.Text;
 namespace Assets.Scripts.model
 {
     [Serializable]
-    class MsModel
+    class MsPath
     {
-        public List<MsNode> nodes;
-        public List<MsEdge> edges;
-        public List<MsPath> paths;
+        public string node;
+        public string type;
+        public string path;
     }
 }

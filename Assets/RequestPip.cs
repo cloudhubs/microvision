@@ -8,34 +8,25 @@ using UnityEngine;
 
 public class RequestPip : MonoBehaviour
 {
-    private IList<Node> steps;
+    private IList<GameObject> steps;
+    private Node someNode;
     private int stepIdx;
-    private int pauseTime = 3000;
-    private Timer timer;
+    private float pauseTime = 3f;
     private bool isMoving;
-    private float speed = 0.5f;
+    private bool timerStarted = false;
+    private float speed = 1.0f;
+    private float timeLeft = 999f;
 
-    ~RequestPip()
-    {
-        timer.Stop();
-        timer.Dispose();
-    }
-
-    public void Init(IList<Node> steps)
+    public void Init(IList<GameObject> steps)
     {
         if (!steps.Any()) // no nodes in list, do nothing
         {
             return;
         }
-        foreach(Node n in steps)
-        {
-            Debug.Log("Node name: " + n.GetLabelText());
-            Debug.Log("Node position: " + n.transform.position.ToString());
-        }
         this.steps = steps;
         stepIdx = 0;
         isMoving = false;
-        Node first = steps[0];
+        Node first = steps[0].GetComponent<Node>();
         Debug.Log(first.GetLabelText());
         transform.parent = first.transform;
         transform.localPosition = Vector3.zero;
@@ -43,59 +34,69 @@ public class RequestPip : MonoBehaviour
         //timer.Elapsed += OnPauseTimer;
         //timer.AutoReset = false;
         //timer.Enabled = true;
-        // TEMP!!!
-        NextStep();
+        //// TEMP!!!
+        //NextStep();
+        StartPause();
         Debug.Log("Node global position: " + transform.parent.position.ToString());
         Debug.Log("Pip global position: " + transform.position.ToString());
         Debug.Log("Pip local position: " + transform.localPosition.ToString());
+        //someNode = steps[1].GetComponent<Node>();
     }
 
-    // pause timer expired, go to next step
-    private void OnPauseTimer(object source, ElapsedEventArgs e)
-    {
-        Debug.Log("Timer expired");
-        timer.Stop(); // stop the pause timer while we travel to next step
-        bool isNext = NextStep(); // travel to next step
-        if (isNext)
-        {
-            //timer.Start();
-        }
-    }
+    //// pause timer expired, go to next step
+    //private void OnPauseTimer(object source, ElapsedEventArgs e)
+    //{
+    //    Debug.Log("Timer expired");
+    //    timer.Stop(); // stop the pause timer while we travel to next step
+    //    bool isNext = NextStep(); // travel to next step
+    //    Debug.Log("someNode name " + someNode.GetLabelText());
+    //    Debug.Log("someNOde position " + someNode.transform.position.ToString());
+    //    Debug.Log("Next step done?");
+    //    if (isNext)
+    //    {
+    //        // temp!
+    //        timer.Start();
+    //    }
+    //}
 
     // reached a node, start the pause timer
     private void StartPause()
     {
-        Debug.Log("Timer started");
-        timer.Start();
+        timeLeft = pauseTime;
+        timerStarted = true;
     }
 
     // start moving to next node; returns true if there was another step to go to, false if not
     public bool NextStep()
     {
-        Debug.Log("moving to next node");
         stepIdx++;
-        Debug.Log("stepIdx: " + stepIdx);
-        Debug.Log("steps.Count: " + steps.Count);
-        Node next = steps.ElementAt(stepIdx);
-        Debug.Log("Next: " + next.GetLabelText());
-        Debug.Log("Next position: " + next.transform.position.ToString());
+        if (stepIdx == steps.Count)
+        {
+            StopRequest();
+            return false;
+        }
+        someNode = steps[stepIdx].GetComponent<Node>();
+        Node next = steps[stepIdx].GetComponent<Node>();
         transform.parent = next.transform;
-        //if (stepIdx == steps.Count)
-        //{
-        //    StopRequest();
-        //    return false;
-        //}
-
-
-        Debug.Log("Next node global position: " + transform.parent.position.ToString());
-        Debug.Log("Pip global position: " + transform.position.ToString());
-        Debug.Log("Pip local position: " + transform.localPosition.ToString());
         isMoving = true;
         return true;
     }
 
     void Update()
     {
+        if (timerStarted)
+        {
+            if (timeLeft > 0)
+            {
+                timeLeft -= Time.deltaTime;
+            }
+            else
+            {
+                timeLeft = 0;
+                timerStarted = false;
+                NextStep();
+            }
+        }
         if (isMoving)
         {
             float step = speed * Time.deltaTime;
@@ -104,9 +105,7 @@ public class RequestPip : MonoBehaviour
             {
                 Debug.Log("reached node, stopping");
                 isMoving = false;
-                //StartPause();
-                // TEMP!!!!
-                NextStep();
+                StartPause();
             }
 
         }
@@ -120,8 +119,8 @@ public class RequestPip : MonoBehaviour
 
     private void StopRequest()
     {
-        timer.Stop();
-        timer.Dispose();
+        timerStarted = false;
+        isMoving = false;
     }
 
 }

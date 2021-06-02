@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.model;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,13 +8,20 @@ public class Node : MonoBehaviour
 
     GameObject edgepf;
     public bool anchored { get; set; }
+    public IList<MsLabel> endpoints { get; set; }
 
     List<GameObject>  edges  = new List<GameObject> ();
-    List<SpringJoint> joints = new List<SpringJoint>();  
-  
+    List<SpringJoint> joints = new List<SpringJoint>();
+
+    GameObject uiManagerObj;
+    UIManager uiManager;
+
+
     void Start()
     {
         //transform.GetChild(0).GetComponent<TextMesh>().text = name;
+        uiManagerObj = GameObject.Find("UIManager");
+        uiManager = uiManagerObj.GetComponent<UIManager>();
     }
 
     void Update()
@@ -36,12 +44,17 @@ public class Node : MonoBehaviour
         }
     }
 
+    private void OnMouseDown()
+    {
+        uiManager.PopulateEndpointContextMenu(this);
+    }
+
     public void SetEdgePrefab(GameObject epf)
     {
         this.edgepf = epf;
     }
 
-    public void AddEdge(Node n)
+    public GameObject AddEdge(Node n)
     {
         SpringJoint sj = gameObject.AddComponent<SpringJoint>();
         sj.autoConfigureConnectedAnchor = false;
@@ -56,6 +69,7 @@ public class Node : MonoBehaviour
         edge.transform.localPosition = transform.localPosition;
         edges.Add(edge);
         joints.Add(sj);
+        return edge;
     }
 
     public string GetLabelText()

@@ -6,7 +6,7 @@ using System.Text;
 namespace Assets.Scripts.model
 {
     [Serializable]
-    class MsLabel
+    public class MsLabel
     {
         public string type;
         public string argument;

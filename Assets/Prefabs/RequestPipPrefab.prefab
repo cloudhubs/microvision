@@ -91,7 +91,7 @@ SphereCollider:
   m_GameObject: {fileID: 1146233558338359423}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -106,7 +106,7 @@ Halo:
   m_Color:
     serializedVersion: 2
     rgba: 4278190335
-  m_Size: 0.4
+  m_Size: 0.05
 --- !u!114 &-5125894839738365351
 MonoBehaviour:
   m_ObjectHideFlags: 0

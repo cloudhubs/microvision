@@ -11,5 +11,6 @@ namespace Assets.Scripts.model
         public string label;
         public int id;
         public string shape;
+        public List<MsLabel> endpoints;
     }
 }
