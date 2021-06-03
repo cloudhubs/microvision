@@ -25,6 +25,14 @@ public class RequestPip : MonoBehaviour
     private bool atTarget;
     public bool isFinished { get; set; }
 
+    public UIManager UiManager;
+
+    void Start()
+    {
+        if (UiManager == null)
+            UiManager = GameObject.FindWithTag("ui_manager").GetComponent<UIManager>();
+    }
+
     public void Init(IList<(Node, MsLabel)> steps)
     {
         if (!steps.Any()) // no nodes in list, do nothing
@@ -117,7 +125,12 @@ public class RequestPip : MonoBehaviour
     {
 
     }
-    
+
+    private void OnMouseDown()
+    {
+        UiManager.PopulateCurrentRequestMenu();
+    }
+
 
     private void StopRequest()
     {

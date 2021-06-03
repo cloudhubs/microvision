@@ -74,6 +74,11 @@ public class UIManager : MonoBehaviour
         menu.SetIsEndpointMode(false);
     }
 
+    public void PopulateCurrentRequestMenu()
+    {
+        // TODO: stuff
+    }
+
     public void ToggleMenuMode()
     {
         if (menu.IsEndpointMode)
@@ -91,6 +96,7 @@ public class UIManager : MonoBehaviour
             Destroy(CurrentRequestPip);
 
         CurrentRequestPip = request;
+        menu.CloseMenu();
         return true;
     }
 

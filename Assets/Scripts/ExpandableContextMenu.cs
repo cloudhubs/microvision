@@ -21,7 +21,7 @@ public class ExpandableContextMenu : MonoBehaviour
 
     private IList<GameObject> menuItems;
 
-    // setup menu for just endpoints
+    // setup menu for just info (no requests)
     public void SetupMenu(IList<(string buttonText, string bodyText)> buttonAndContentTexts)
     {
         resetMenu();
