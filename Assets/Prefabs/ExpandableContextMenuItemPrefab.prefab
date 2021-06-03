@@ -813,6 +813,9 @@ MonoBehaviour:
   ContentText: {fileID: 5301960004708379497}
   PlayRequestContainer: {fileID: 3454543266862665313}
   PlayRequestButton: {fileID: 1828570434284209837}
+  RequestPf: {fileID: 1146233558338359423, guid: 1b52da2e2aee142458ee5c6379edd18f,
+    type: 3}
+  UiManager: {fileID: 0}
 --- !u!1 &5301960006523685537
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,7 +852,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 83, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5301960006523685540

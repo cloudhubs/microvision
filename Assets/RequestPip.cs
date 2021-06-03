@@ -32,13 +32,14 @@ public class RequestPip : MonoBehaviour
             return;
         }
         this.steps = steps;
+        currentTarget = (steps[0].Item1, steps[0].Item2);
+        transform.parent = currentTarget.Item1.transform;
+        transform.localScale = transform.parent.lossyScale;
         stepIdx = 0;
         // set up flags
         isMoving = false;
         atTarget = true;
         isFinished = false;
-        currentTarget = (steps[0].Item1, steps[0].Item2);
-        transform.parent = currentTarget.Item1.transform;
         transform.localPosition = Vector3.zero;
         StartPause();
     }
@@ -123,6 +124,7 @@ public class RequestPip : MonoBehaviour
         timerStarted = false;
         isMoving = false;
         isFinished = true;
+        Destroy(gameObject);
     }
 
 }

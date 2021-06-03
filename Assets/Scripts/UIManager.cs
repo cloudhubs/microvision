@@ -17,13 +17,13 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         gameObject.tag = "ui_manager";
-        if (graph == null)
-            graph = GameObject.FindWithTag("graph").GetComponent<Graph>();
         menu = contextMenuObj.GetComponent<ExpandableContextMenu>();
     }
 
     public void PopulateEndpointContextMenu(Node node)
     {
+        if (isRequestActive())
+            return;
         CurrentNode = node;
         List<(string, string)> contentList = new List<(string, string)>();
         foreach (MsLabel endpoint in node.endpoints)
@@ -41,7 +41,11 @@ public class UIManager : MonoBehaviour
 
     public void PopulatePathContextMenu(Node node)
     {
+        if (isRequestActive())
+            return;
         CurrentNode = node;
+        if (graph == null)
+            graph = GameObject.FindWithTag("graph").GetComponent<Graph>();
         List<(string, string, IList<(Node, MsLabel)>)> contentList = new List<(string, string, IList<(Node, MsLabel)>)>();
 
         List<List<MsPathStep>> allPaths = graph.paths;
@@ -64,6 +68,7 @@ public class UIManager : MonoBehaviour
                                  "Total internal hops: " + fullSteps.Count;
             contentList.Add((buttonText, contentText, fullSteps));
         }
+
         menu.SetupMenu(contentList);
         menu.SetTitle(node.GetLabelText() + " - requests");
         menu.SetIsEndpointMode(false);
@@ -80,12 +85,17 @@ public class UIManager : MonoBehaviour
     // returns true if new request can be started; false if old request still running
     public bool SetCurrentRequest(RequestPip request)
     {
-        if (CurrentRequestPip != null && !CurrentRequestPip.isFinished)
+        if (isRequestActive())
             return false; // request already exists and is not finished
-        if (CurrentRequestPip.isFinished)
+        if (CurrentRequestPip != null && CurrentRequestPip.isFinished)
             Destroy(CurrentRequestPip);
 
         CurrentRequestPip = request;
         return true;
+    }
+
+    private bool isRequestActive()
+    {
+        return CurrentRequestPip != null && !CurrentRequestPip.isFinished;
     }
 }

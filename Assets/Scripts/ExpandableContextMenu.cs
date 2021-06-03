@@ -14,8 +14,6 @@ public class ExpandableContextMenu : MonoBehaviour
     public GameObject CloseButton;
     public GameObject SwitchModeButton;
     public GameObject Title;
-    public GameObject GraphBase;
-    
 
     public bool IsEndpointMode { get; private set; }
     private static string EndpointModeButtonText = "Switch to requests"; // when in endpoint mode, button should offer to switch to request mode

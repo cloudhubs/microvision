@@ -86,7 +86,7 @@ public class Graph : MonoBehaviour
         }
 
         // process paths
-        paths = data.communication.paths;
+        paths = data.communication.paths.Select(p => p.pathSteps).ToList();
         
         // handle unconnected nodes
         foreach(Node n in nodes.Values)
