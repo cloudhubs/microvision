@@ -117,6 +117,7 @@ public class RequestPip : MonoBehaviour
             if (Vector3.Distance(transform.localPosition, Vector3.zero) < 0.001f) // we arrived
             {
                 isMoving = false;
+                NodeReachedEvent.Invoke();
                 StartPause();
             }
         }
@@ -172,6 +173,7 @@ public class RequestPip : MonoBehaviour
         if (IsPlaying)
             StartPause();
         currentTarget.Item1.SetActiveMat();
+        NodeReachedEvent.Invoke();
     }
 
     public void SkipToPrev()
@@ -190,10 +192,11 @@ public class RequestPip : MonoBehaviour
         if (IsPlaying)
             StartPause();
         currentTarget.Item1.SetActiveMat();
+        NodeReachedEvent.Invoke();
     }
 
     // status functions (for displaying info boxes)
-    
+
     public (Node, MsLabel) GetNextDestination()
     {
         if (AtTarget) // if we're at a node, we need to calculate next target
@@ -212,7 +215,7 @@ public class RequestPip : MonoBehaviour
     public (Node, MsLabel) GetPreviousDestination()
     {
         int newIdx = stepIdx - 1;
-        if (newIdx == 0)
+        if (newIdx < 0)
             return (null, null);
         return Steps[newIdx];
     }

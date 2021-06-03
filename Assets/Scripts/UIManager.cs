@@ -22,13 +22,16 @@ public class UIManager : MonoBehaviour
         gameObject.tag = "ui_manager";
         menu = contextMenuObj.GetComponent<ExpandableContextMenu>();
         RequestController = RequestControllerObj.GetComponent<RequestController>();
-        menu.MenuClosedEvent.AddListener(menuClosedListener);
     }
 
     public void PopulateEndpointContextMenu(Node node)
     {
         if (isRequestActive())
+        {
+            // try to populate this node's endpoints IF it is relevant to the current request
+            PopulateRequestNodeEndpoints(node);
             return;
+        }
         if (CurrentNode != null)
             CurrentNode.SetDefaultMat();
         CurrentNode = node;
@@ -184,8 +187,9 @@ public class UIManager : MonoBehaviour
         if (CurrentRequestPip != null && CurrentRequestPip.IsFinished)
             Destroy(CurrentRequestPip);
         menu.CloseMenu();
-        
+        SetNeighborMats(false);
         CurrentRequestPip = request;
+        CurrentRequestPip.NodeReachedEvent.AddListener(requestReachedNodeListener);
         RequestController.SetCurrentRequest(CurrentRequestPip);
         return true;
     }
@@ -195,8 +199,9 @@ public class UIManager : MonoBehaviour
         return CurrentRequestPip != null && !CurrentRequestPip.IsFinished;
     }
 
-    private void menuClosedListener()
+    public void CloseContextMenu()
     {
+        menu.CloseMenu();
         if (isRequestActive())
             return; // do nothing, don't mess with mats while request is running
         SetNeighborMats(false); // if no request running and menu is closed, reset all colors

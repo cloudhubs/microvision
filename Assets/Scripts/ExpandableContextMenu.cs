@@ -16,21 +16,11 @@ public class ExpandableContextMenu : MonoBehaviour
     public GameObject SwitchModeButton;
     public GameObject Title;
 
-    public UnityEvent MenuClosedEvent { get; private set; }
-
     public bool IsEndpointMode { get; private set; }
     private static string EndpointModeButtonText = "Switch to requests"; // when in endpoint mode, button should offer to switch to request mode
     private static string RequestModeButtonText = "Switch to endpoints"; // vice versa
 
     private IList<GameObject> menuItems;
-
-    void Awake()
-    {
-        if (MenuClosedEvent == null)
-        {
-            MenuClosedEvent = new UnityEvent();
-        }
-    }
 
     // setup menu for just info (no requests)
     public void SetupMenu(IList<(string buttonText, string bodyText)> buttonAndContentTexts)
@@ -82,7 +72,6 @@ public class ExpandableContextMenu : MonoBehaviour
 
     public void CloseMenu()
     {
-        MenuClosedEvent.Invoke();
         gameObject.SetActive(false);
     }
 
