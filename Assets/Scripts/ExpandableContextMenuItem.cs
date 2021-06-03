@@ -54,9 +54,10 @@ public class ExpandableContextMenuItem : MonoBehaviour
     {
         GameObject requestObj = Instantiate(RequestPf, transform);
         RequestPip currentRequest = requestObj.GetComponent<RequestPip>();
-        UiManager.SetCurrentRequest(currentRequest);
-        currentRequest.Init(request);
-
+        bool isValid = UiManager.SetCurrentRequest(currentRequest);
+        if (isValid)
+        {
+            currentRequest.Init(request);
+        }
     }
-
 }

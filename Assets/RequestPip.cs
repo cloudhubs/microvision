@@ -23,7 +23,7 @@ public class RequestPip : MonoBehaviour
     private bool isMoving;
     private bool timerStarted;
     private bool atTarget;
-    public bool finished { get; set; }
+    public bool isFinished { get; set; }
 
     public void Init(IList<(Node, MsLabel)> steps)
     {
@@ -36,7 +36,7 @@ public class RequestPip : MonoBehaviour
         // set up flags
         isMoving = false;
         atTarget = true;
-        finished = false;
+        isFinished = false;
         currentTarget = (steps[0].Item1, steps[0].Item2);
         transform.parent = currentTarget.Item1.transform;
         transform.localPosition = Vector3.zero;
@@ -122,6 +122,7 @@ public class RequestPip : MonoBehaviour
     {
         timerStarted = false;
         isMoving = false;
+        isFinished = true;
     }
 
 }

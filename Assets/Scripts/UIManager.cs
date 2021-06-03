@@ -6,13 +6,16 @@ using Assets.Scripts.model;
 public class UIManager : MonoBehaviour
 {
     public GameObject contextMenuObj;
-    public List<MsPath> paths { get; set; }
 
     public RequestPip CurrentRequestPip { get; private set; }
+
+    private Graph graph;
 
     void Start()
     {
         gameObject.tag = "ui_manager";
+        if (graph == null)
+            graph = GameObject.FindWithTag("graph").GetComponent<Graph>();
     }
 
     public void PopulateEndpointContextMenu(Node node)
@@ -34,15 +37,22 @@ public class UIManager : MonoBehaviour
     public void PopulatePathContextMenu(Node node)
     {
         ExpandableContextMenu menu = contextMenuObj.GetComponent<ExpandableContextMenu>();
-        List<(string, string)> contentList = new List<(string, string)>();
+        List<(string, string, IList<(Node, MsLabel)>)> contentList = new List<(string, string, IList<(Node, MsLabel)>)>();
+        
     }
 
-    public void SetCurrentRequest(RequestPip request)
+    // returns true if new request can be started; false if old request still running
+    public bool SetCurrentRequest(RequestPip request)
     {
-        if (CurrentRequestPip != null && !CurrentRequestPip.finished)
+        if (CurrentRequestPip != null && !CurrentRequestPip.isFinished)
         {
-            return; // request already exists and is not finished
+            return false; // request already exists and is not finished
+        }
+        if (CurrentRequestPip.isFinished)
+        {
+            Destroy(CurrentRequestPip);
         }
         CurrentRequestPip = request;
+        return true;
     }
 }

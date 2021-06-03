@@ -10,6 +10,6 @@ namespace Assets.Scripts.model
     {
         public List<MsNode> nodes;
         public List<MsEdge> edges;
-        public List<MsPath> paths;
+        public List<List<MsPathStep>> paths;
     }
 }

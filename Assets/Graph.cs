@@ -16,25 +16,28 @@ public class Graph : MonoBehaviour
     public float width;
     public float length;
     public float height;
-
-    RequestPip currentRequest = null;
-    GameObject currentRequestObject = null;
-    Dictionary<string, Node> nodes;
-    Dictionary<(string, string), GameObject> edges;
-    ISet<Node> connectedNodes = new HashSet<Node>();
-    bool initDone = false;
+    
     UnconnectedGraph unconnectedGraph;
     ServicesMenu menu;
 
+    public Dictionary<string, Node> nodes { get; private set; }
+    public Dictionary<(string, string), GameObject> edges { get; private set; }
+    public IList<MsLabel> 
+    ISet<Node> connectedNodes = new HashSet<Node>();
+    bool initDone = false;
+    
+
     void Start()
     {
+        gameObject.tag = "graph";
+
         ProphetData data = CallProphet();
         nodes = new Dictionary<string,Node>();
         edges = new Dictionary<(string, string), GameObject>();
         GameObject ugObject = new GameObject();
         unconnectedGraph = ugObject.AddComponent<UnconnectedGraph>() as UnconnectedGraph;
         unconnectedGraph.transform.parent = transform;
-
+        
         // process nodes
         for (int i = 0; i < data.communication.nodes.Count; i++)
         {
@@ -80,7 +83,7 @@ public class Graph : MonoBehaviour
         }
 
         // process paths
-        foreach (MsPath path in data.communication.paths)
+        foreach (MsPathStep path in data.communication.paths)
         {
             
         }
