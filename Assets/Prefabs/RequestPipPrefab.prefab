@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 841594795075596188}
   - component: {fileID: 122214418229166235}
   - component: {fileID: -5125894839738365351}
+  - component: {fileID: -1212456070695894070}
   m_Layer: 0
   m_Name: RequestPipPrefab
   m_TagString: Untagged
@@ -117,5 +118,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe1d4bc64a838954f8b9f707d5733716, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UiManager: {fileID: 0}
+--- !u!114 &-1212456070695894070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146233558338359423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c211e62ccf09feb4786d96c85b452c78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -11,13 +11,18 @@ public class GraphSpawner : MonoBehaviour
     public GameObject toSpawn;
     private GameObject spawnedObject;
     private ARRaycastManager raycaster;
+    private ARPlaneManager planeManager;
     private Vector2 touchPosition;
+
+    private bool isSearching;
 
     static List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
     private void Awake()
     {
         raycaster = GetComponent<ARRaycastManager>(); // component that was required above
+        planeManager = GetComponent<ARPlaneManager>();
+        isSearching = true;
     }
 
     bool TryGetTouchPosition(out Vector2 touchPos)
@@ -38,15 +43,17 @@ public class GraphSpawner : MonoBehaviour
 
     void Update()
     {
-        if (!TryGetTouchPosition(out touchPosition))
-        {
+        if (!isSearching)
             return;
-        }
+        if (!TryGetTouchPosition(out touchPosition))
+            return;
         // fire the ray! 
         if (raycaster.Raycast(touchPosition, hits, TrackableType.PlaneWithinPolygon))
         {
             Pose hitPose = hits[0].pose;
             spawnedObject = Instantiate(toSpawn, hitPose.position, hitPose.rotation);
+            // stop looking for planes
+            isSearching = false;
         }
     }
 }
