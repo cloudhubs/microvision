@@ -1,0 +1,610 @@
+{
+    "communication": {
+        "nodes": [
+            {
+                "id": null,
+                "label": "qms",
+                "shape": "box",
+                "endpoints": [
+                    {
+                        "type": "GET",
+                        "argument": "[]",
+                        "msReturn": "Question",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.QuestionController.findAllQuestions",
+                        "path": "/question/all"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable Long questionId]",
+                        "msReturn": "Question",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.QuestionController.findQuestionById",
+                        "path": "/question/{questionId}"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@RequestParam Map<String, Object> customQuery]",
+                        "msReturn": "baylor.csi.questionManagement.model.dto.QuestionDto",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.QuestionController.findQuestionByCateogryIdAndName",
+                        "path": "/question"
+                    },
+                    {
+                        "type": "POST",
+                        "argument": "[@Valid @RequestBody Map<String, Object> payload]",
+                        "msReturn": "Question",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.QuestionController.createQuestion",
+                        "path": "/question"
+                    },
+                    {
+                        "type": "PUT",
+                        "argument": "[@PathVariable Long questionId, @Valid @RequestBody Map<String, Object> payload]",
+                        "msReturn": "Question",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.QuestionController.updateQuestion",
+                        "path": "/question/{questionId}"
+                    },
+                    {
+                        "type": "DELETE",
+                        "argument": "[@PathVariable Long questionId]",
+                        "msReturn": "ResponseEntity<?>",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.QuestionController.deleteQuestion",
+                        "path": "/question/{questionId}"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[]",
+                        "msReturn": "baylor.csi.questionManagement.model.Language",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.LanguageController.findAllLanguages",
+                        "path": "/language"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable Long languageId]",
+                        "msReturn": "baylor.csi.questionManagement.model.Language",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.LanguageController.findLanguageById",
+                        "path": "/language/{languageId}"
+                    },
+                    {
+                        "type": "POST",
+                        "argument": "[@Valid @RequestBody Language language]",
+                        "msReturn": "baylor.csi.questionManagement.model.Language",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.LanguageController.createLanguage",
+                        "path": "/language"
+                    },
+                    {
+                        "type": "PUT",
+                        "argument": "[@PathVariable Long languageId, @Valid @RequestBody Language languageRequest]",
+                        "msReturn": "baylor.csi.questionManagement.model.Language",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.LanguageController.updateLanguage",
+                        "path": "/language/{languageId}"
+                    },
+                    {
+                        "type": "DELETE",
+                        "argument": "[@PathVariable Long languageId]",
+                        "msReturn": "ResponseEntity<?>",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.LanguageController.deleteQuestion",
+                        "path": "/language/{languageId}"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[]",
+                        "msReturn": "baylor.csi.questionManagement.model.Configuration",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.ConfigurationController.findAllConfigurations",
+                        "path": "/configuration"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable Long configurationId]",
+                        "msReturn": "baylor.csi.questionManagement.model.Configuration",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.ConfigurationController.findConfigurationsById",
+                        "path": "/configuration/{configurationId}"
+                    },
+                    {
+                        "type": "DELETE",
+                        "argument": "[@PathVariable Long configurationId]",
+                        "msReturn": "ResponseEntity<?>",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.ConfigurationController.deleteConfiguration",
+                        "path": "/configuration/{configurationId}"
+                    },
+                    {
+                        "type": "POST",
+                        "argument": "[@Valid @RequestBody Map<String, Object> payload]",
+                        "msReturn": "baylor.csi.questionManagement.model.Configuration",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.ConfigurationController.createConfiguration",
+                        "path": "/configuration"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[]",
+                        "msReturn": "baylor.csi.questionManagement.model.Category",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.CategoryController.findAllCategories",
+                        "path": "/category"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable Long cateogryId]",
+                        "msReturn": "baylor.csi.questionManagement.model.Category",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.CategoryController.findCategoriesById",
+                        "path": "/category/{cateogryId}"
+                    },
+                    {
+                        "type": "POST",
+                        "argument": "[@Valid @RequestBody Category category]",
+                        "msReturn": "baylor.csi.questionManagement.model.Category",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.CategoryController.createCategory",
+                        "path": "/category"
+                    },
+                    {
+                        "type": "PUT",
+                        "argument": "[@PathVariable Long cateogryId, @Valid @RequestBody Category categoryRequest]",
+                        "msReturn": "baylor.csi.questionManagement.model.Category",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.CategoryController.updateCategory",
+                        "path": "/category/{cateogryId}"
+                    },
+                    {
+                        "type": "DELETE",
+                        "argument": "[@PathVariable Long cateogryId]",
+                        "msReturn": "ResponseEntity<?>",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.CategoryController.deleteCateogry",
+                        "path": "/category/{cateogryId}"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[]",
+                        "msReturn": "baylor.csi.questionManagement.model.dto.CategoryInfoDto",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.CategoryInfoController.findAllCategoryInfos",
+                        "path": "/categoryinfo"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@RequestParam(\"configId\") Long configId]",
+                        "msReturn": "baylor.csi.questionManagement.model.dto.QuestionSingleCodeDto",
+                        "endpointFunction": "baylor.csi.questionManagement.controller.TestController.createTest",
+                        "path": "/test"
+                    }
+                ]
+            },
+            {
+                "id": null,
+                "label": "cms",
+                "shape": "box",
+                "endpoints": [
+                    {
+                        "type": "POST",
+                        "argument": "[@RequestBody ExamDto object]",
+                        "msReturn": "java.lang.Object",
+                        "endpointFunction": "edu.baylor.ecs.cms.controller.ExamController.createExam",
+                        "path": "/exam/create"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable String email, @RequestHeader(\"Authorization\") String authorication]",
+                        "msReturn": "edu.baylor.ecs.cms.dto.EmailDto",
+                        "endpointFunction": "edu.baylor.ecs.cms.controller.ExamController.isEmailValid",
+                        "path": "/exam/{email}"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@RequestHeader(\"Authorization\") String authorication]",
+                        "msReturn": "java.lang.Object",
+                        "endpointFunction": "edu.baylor.ecs.cms.controller.ExamController.getAllUsers",
+                        "path": "/exam/users"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable Integer id]",
+                        "msReturn": "edu.baylor.ecs.cms.model.Question",
+                        "endpointFunction": "edu.baylor.ecs.cms.controller.ExamController.getExamDetail",
+                        "path": "/exam/{id}/detail"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[]",
+                        "msReturn": "edu.baylor.ecs.cms.model.Exam",
+                        "endpointFunction": "edu.baylor.ecs.cms.controller.ExamController.getAllExams",
+                        "path": "/exam"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[]",
+                        "msReturn": "edu.baylor.ecs.cms.model.Exam",
+                        "endpointFunction": "edu.baylor.ecs.cms.controller.ExamController.getAllExamsInStatusINIT",
+                        "path": "/exam/getAllExamsInStatusINIT"
+                    },
+                    {
+                        "type": "DELETE",
+                        "argument": "[@PathVariable Integer id]",
+                        "msReturn": "java.lang.String",
+                        "endpointFunction": "edu.baylor.ecs.cms.controller.ExamController.deleteExam",
+                        "path": "/exam/deleteExam/{id}"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable String id, @RequestHeader(\"Authorization\") String auth]",
+                        "msReturn": "edu.baylor.ecs.cms.model.User",
+                        "endpointFunction": "edu.baylor.ecs.cms.controller.ExamController.getExamineeById",
+                        "path": "/exam/examineeById/{id}"
+                    },
+                    {
+                        "type": "POST",
+                        "argument": "[@RequestBody ConfigurationDto object]",
+                        "msReturn": "java.lang.Object",
+                        "endpointFunction": "edu.baylor.ecs.cms.controller.ConfigurationController.createConfiguration",
+                        "path": "/configuration"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[]",
+                        "msReturn": "java.lang.Object",
+                        "endpointFunction": "edu.baylor.ecs.cms.controller.ConfigurationController.getConfigurations",
+                        "path": "/configuration"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[]",
+                        "msReturn": "java.lang.Object",
+                        "endpointFunction": "edu.baylor.ecs.cms.controller.CategoryInfoController.getCategoryInfo",
+                        "path": "/categoryInfo"
+                    }
+                ]
+            },
+            {
+                "id": null,
+                "label": "ems",
+                "shape": "box",
+                "endpoints": [
+                    {
+                        "type": "POST",
+                        "argument": "[@RequestBody SelectedChoiceEmsDto selectedChoiceEmsDto]",
+                        "msReturn": "edu.baylor.ems.model.Choice",
+                        "endpointFunction": "edu.baylor.ems.controller.ChoiceController.updateChoices",
+                        "path": "/choice"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[]",
+                        "msReturn": "edu.baylor.ems.model.Exam",
+                        "endpointFunction": "edu.baylor.ems.controller.ExamController.listAllExams",
+                        "path": "/exam"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable Integer id]",
+                        "msReturn": "edu.baylor.ems.model.Question",
+                        "endpointFunction": "edu.baylor.ems.controller.ExamController.listAllQuestionsForExam",
+                        "path": "/exam/{id}/questions"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable String username, @RequestHeader(\"Authorization\") String authorization]",
+                        "msReturn": "edu.baylor.ems.model.Exam",
+                        "endpointFunction": "edu.baylor.ems.controller.ExamController.getByUserName",
+                        "path": "/exam/getByUsername/{username}"
+                    },
+                    {
+                        "type": "POST",
+                        "argument": "[@RequestBody ExamDto examDto]",
+                        "msReturn": "edu.baylor.ems.model.Exam",
+                        "endpointFunction": "edu.baylor.ems.controller.ExamController.createExam",
+                        "path": "/exam"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable(\"id\") Integer id]",
+                        "msReturn": "edu.baylor.ems.dto.QuestionEmsDto",
+                        "endpointFunction": "edu.baylor.ems.controller.ExamController.takeExam",
+                        "path": "/exam/take/{id}"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable(\"id\") Integer id]",
+                        "msReturn": "edu.baylor.ems.model.Exam",
+                        "endpointFunction": "edu.baylor.ems.controller.ExamController.submitExam",
+                        "path": "/exam/submit/{id}"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable(\"id\") Integer id]",
+                        "msReturn": "java.lang.String",
+                        "endpointFunction": "edu.baylor.ems.controller.ExamController.finishExam",
+                        "path": "/exam/finish/{id}"
+                    },
+                    {
+                        "type": "GET",
+                        "argument": "[@PathVariable(\"id\") Integer id]",
+                        "msReturn": "edu.baylor.ems.model.Exam",
+                        "endpointFunction": "edu.baylor.ems.controller.ExamController.getExam",
+                        "path": "/exam/get/{id}"
+                    },
+                    {
+                        "type": "DELETE",
+                        "argument": "[@PathVariable Integer id]",
+                        "msReturn": "java.lang.String",
+                        "endpointFunction": "edu.baylor.ems.controller.ExamController.deleteINITExam",
+                        "path": "/exam/{id}"
+                    }
+                ]
+            },
+            {
+                "id": null,
+                "label": "rms",
+                "shape": "box",
+                "endpoints": [
+                    {
+                      "type": "GET",
+                      "argument": "[@RequestParam(\"configId\") Long configId]",
+                      "msReturn": "baylor.csi.questionManagement.model.dto.QuestionSingleCodeDto",
+                      "endpointFunction": "baylor.csi.questionManagement.controller.TestController.createTest",
+                      "path": "/test"
+                    }
+                ]
+            },
+            {
+                "id": null,
+                "label": "vms",
+                "shape": "box",
+                "endpoints": [
+                    {
+                      "type": "GET",
+                      "argument": "[@RequestParam(\"configId\") Long configId]",
+                      "msReturn": "baylor.csi.questionManagement.model.dto.QuestionSingleCodeDto",
+                      "endpointFunction": "baylor.csi.questionManagement.controller.TestController.createTest",
+                      "path": "/test"
+                    }
+                ]
+            },
+            {
+                "id": null,
+                "label": "zms",
+                "shape": "box",
+                "endpoints": [
+                    {
+                      "type": "GET",
+                      "argument": "[@RequestParam(\"configId\") Long configId]",
+                      "msReturn": "baylor.csi.questionManagement.model.dto.QuestionSingleCodeDto",
+                      "endpointFunction": "baylor.csi.questionManagement.controller.TestController.createTest",
+                      "path": "/test"
+                    }
+                ]
+            },
+            {
+                "id": null,
+                "label": "ams",
+                "shape": "box",
+                "endpoints": [
+                    {
+                      "type": "GET",
+                      "argument": "[@RequestParam(\"configId\") Long configId]",
+                      "msReturn": "baylor.csi.questionManagement.model.dto.QuestionSingleCodeDto",
+                      "endpointFunction": "baylor.csi.questionManagement.controller.TestController.createTest",
+                      "path": "/test"
+                    }
+                ]
+            },
+            {
+                "id": null,
+                "label": "bms",
+                "shape": "box",
+                "endpoints": [
+                    {
+                      "type": "GET",
+                      "argument": "[@RequestParam(\"configId\") Long configId]",
+                      "msReturn": "baylor.csi.questionManagement.model.dto.QuestionSingleCodeDto",
+                      "endpointFunction": "baylor.csi.questionManagement.controller.TestController.createTest",
+                      "path": "/test"
+                    }
+                ]
+            }
+        ],
+        "paths": [
+            {
+                "pathSteps": [
+                    {
+                        "node": "cms",
+                        "type": "GET",
+                        "path": "/exam/{id}/detail"
+                    },
+                    {
+                        "node": "ems",
+                        "type": "GET",
+                        "path": "/exam/{id}/questions"
+                    },
+                    {
+                        "node": "qms",
+                        "type": "GET",
+                        "path": "/test"
+                    }
+                ]
+            }
+        ],
+        "edges": [
+            {
+                "from": {
+                    "id": null,
+                    "label": "cms",
+                    "shape": "box"
+                },
+                "to": {
+                    "id": null,
+                    "label": "ems",
+                    "shape": "box"
+                },
+                "width": 1,
+                "length": 200,
+                "label": {
+                    "type": "GET",
+                    "argument": "[@PathVariable String username, @RequestHeader(\"Authorization\") String authorization]",
+                    "msReturn": "edu.baylor.ems.model.Exam",
+                    "endpointFunction": "edu.baylor.ems.controller.ExamController.getByUserName",
+                    "path": "/exam/getByUsername/{username}"
+                }
+            },
+            {
+                "from": {
+                    "id": null,
+                    "label": "cms",
+                    "shape": "box"
+                },
+                "to": {
+                    "id": null,
+                    "label": "qms",
+                    "shape": "box"
+                },
+                "width": 1,
+                "length": 200,
+                "label": {
+                    "type": "GET",
+                    "argument": "[]",
+                    "msReturn": "Question",
+                    "endpointFunction": "baylor.csi.questionManagement.controller.QuestionController.findAllQuestions",
+                    "path": "/question/all"
+                }
+            },
+            {
+                "from": {
+                    "id": null,
+                    "label": "cms",
+                    "shape": "box"
+                },
+                "to": {
+                    "id": null,
+                    "label": "ems",
+                    "shape": "box"
+                },
+                "width": 1,
+                "length": 200,
+                "label": {
+                    "type": "GET",
+                    "argument": "[]",
+                    "msReturn": "edu.baylor.ems.model.Exam",
+                    "endpointFunction": "edu.baylor.ems.controller.ExamController.listAllExams",
+                    "path": "/exam"
+                }
+            },
+            {
+                "from": {
+                    "id": null,
+                    "label": "cms",
+                    "shape": "box"
+                },
+                "to": {
+                    "id": null,
+                    "label": "ems",
+                    "shape": "box"
+                },
+                "width": 1,
+                "length": 200,
+                "label": {
+                    "type": "GET",
+                    "argument": "[@PathVariable(\"id\") Integer id]",
+                    "msReturn": "java.lang.String",
+                    "endpointFunction": "edu.baylor.ems.controller.ExamController.finishExam",
+                    "path": "/exam/finish/{id}"
+                }
+            },
+            {
+                "from": {
+                    "id": null,
+                    "label": "cms",
+                    "shape": "box"
+                },
+                "to": {
+                    "id": null,
+                    "label": "ems",
+                    "shape": "box"
+                },
+                "width": 1,
+                "length": 200,
+                "label": {
+                    "type": "GET",
+                    "argument": "[@PathVariable Integer id]",
+                    "msReturn": "edu.baylor.ems.model.Question",
+                    "endpointFunction": "edu.baylor.ems.controller.ExamController.listAllQuestionsForExam",
+                    "path": "/exam/{id}/questions"
+                }
+            },
+            {
+                "from": {
+                    "id": null,
+                    "label": "ems",
+                    "shape": "box"
+                },
+                "to": {
+                    "id": null,
+                    "label": "qms",
+                    "shape": "box"
+                },
+                "width": 1,
+                "length": 200,
+                "label": {
+                    "type": "GET",
+                    "argument": "[@RequestParam(\"configId\") Long configId]",
+                    "msReturn": "baylor.csi.questionManagement.model.dto.QuestionSingleCodeDto",
+                    "endpointFunction": "baylor.csi.questionManagement.controller.TestController.createTest",
+                    "path": "/test"
+                }
+            },
+            {
+                "from": {
+                    "id": null,
+                    "label": "ems",
+                    "shape": "box"
+                },
+                "to": {
+                    "id": null,
+                    "label": "rms",
+                    "shape": "box"
+                },
+                "width": 1,
+                "length": 200,
+                "label": {
+                    "type": "GET",
+                    "argument": "[@RequestParam(\"configId\") Long configId]",
+                    "msReturn": "baylor.csi.questionManagement.model.dto.QuestionSingleCodeDto",
+                    "endpointFunction": "baylor.csi.questionManagement.controller.TestController.createTest",
+                    "path": "/test"
+                }
+            },
+            {
+                "from": {
+                    "id": null,
+                    "label": "cms",
+                    "shape": "box"
+                },
+                "to": {
+                    "id": null,
+                    "label": "vms",
+                    "shape": "box"
+                },
+                "width": 1,
+                "length": 200,
+                "label": {
+                    "type": "GET",
+                    "argument": "[@RequestParam(\"configId\") Long configId]",
+                    "msReturn": "baylor.csi.questionManagement.model.dto.QuestionSingleCodeDto",
+                    "endpointFunction": "baylor.csi.questionManagement.controller.TestController.createTest",
+                    "path": "/test"
+                }
+            },
+            {
+                "from": {
+                    "id": null,
+                    "label": "qms",
+                    "shape": "box"
+                },
+                "to": {
+                    "id": null,
+                    "label": "vms",
+                    "shape": "box"
+                },
+                "width": 1,
+                "length": 200,
+                "label": {
+                    "type": "GET",
+                    "argument": "[@RequestParam(\"configId\") Long configId]",
+                    "msReturn": "baylor.csi.questionManagement.model.dto.QuestionSingleCodeDto",
+                    "endpointFunction": "baylor.csi.questionManagement.controller.TestController.createTest",
+                    "path": "/test"
+                }
+            }
+        ]
+    }
+}

@@ -83,6 +83,39 @@ public class UIManager : MonoBehaviour
         menu.SetIsEndpointMode(false);
     }
 
+    // show the current request step
+    public void PopulateRequestStepContextMenu()
+    {
+        List<(string, string)> contentList = new List<(string, string)>();
+        (Node, MsLabel) dest = CurrentRequestPip.GetNextDestination();
+        (Node, MsLabel) src = CurrentRequestPip.GetPreviousDestination();
+        if (dest.Item1 != null)
+        {
+            string destinationButtonText = "Next destination: " + dest.Item1.GetLabelText();
+            string destinationContentText = "HTTP call: " + dest.Item2.type + " " + dest.Item2.path + "\n" +
+                                            "Endpoint function: " + dest.Item2.endpointFunction + "\n" +
+                                            "Arguments: " + dest.Item2.argument + "\n" +
+                                            "Expected return: " + dest.Item2.msReturn;
+            contentList.Add((destinationButtonText, destinationContentText));
+        }
+        if (src.Item1 != null)
+        {
+            string sourceButtonText = "Previous endpoint: " + src.Item1.GetLabelText();
+            string sourceContentText = "HTTP call: " + src.Item2.type + " " + src.Item2.path + "\n" +
+                                      "Endpoint function: " + src.Item2.endpointFunction + "\n" +
+                                      "Arguments: " + src.Item2.argument + "\n" +
+                                      "Expected return: " + src.Item2.msReturn;
+            contentList.Add((sourceButtonText, sourceContentText));
+        }
+        menu.SetupMenu(contentList);
+    }
+
+    // show the endpoints of a node that are used in the current request
+    public void PopulateRequestNodeEndpoints(Node node)
+    {
+
+    }
+
     // Set neighbor materials. If isActive, set as neighbor mats; else, revert to default mats
     private void SetNeighborMats(bool isActive)
     {
@@ -150,5 +183,13 @@ public class UIManager : MonoBehaviour
         if (isRequestActive())
             return; // do nothing, don't mess with mats while request is running
         SetNeighborMats(false); // if no request running and menu is closed, reset all colors
+    }
+
+    private void requestReachedNodeListener()
+    {
+        if (menu.gameObject.activeSelf)
+        {
+            PopulateRequestStepContextMenu();
+        }
     }
 }

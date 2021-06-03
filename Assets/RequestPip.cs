@@ -23,13 +23,14 @@ public class RequestPip : MonoBehaviour
     // flags
     private bool isMoving;
     private bool timerStarted;
-    private bool atTarget;
+    public bool AtTarget { get; private set; }
     public bool IsPlaying { get; private set; }
     public bool IsFinished { get; set; }
 
     public UIManager UiManager;
 
     public UnityEvent RequestFinishedEvent { get; private set; }
+    public UnityEvent NodeReachedEvent { get; private set; }
 
     void Awake()
     {
@@ -37,7 +38,11 @@ public class RequestPip : MonoBehaviour
             UiManager = GameObject.FindWithTag("ui_manager").GetComponent<UIManager>();
         if (RequestFinishedEvent == null)
             RequestFinishedEvent = new UnityEvent();
+        if (NodeReachedEvent == null)
+            NodeReachedEvent = new UnityEvent();
     }
+
+    // Handling movement of the pip
 
     public void Init(IList<(Node, MsLabel)> steps)
     {
@@ -49,7 +54,7 @@ public class RequestPip : MonoBehaviour
         this.steps = steps;
         currentTarget = (this.steps[0].Item1, this.steps[0].Item2);
         transform.parent = currentTarget.Item1.transform;
-        transform.localScale = transform.parent.lossyScale;
+        transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
         transform.localPosition = Vector3.zero;
         stepIdx = 0;
         // set initial mats for all the nodes in the path
@@ -58,7 +63,7 @@ public class RequestPip : MonoBehaviour
         currentTarget.Item1.SetActiveMat();
         // set up flags
         isMoving = false;
-        atTarget = true;
+        AtTarget = true;
         IsFinished = false;
         IsPlaying = true;
         StartPause();
@@ -70,7 +75,7 @@ public class RequestPip : MonoBehaviour
         currentTarget.Item1.SetActiveMat();
         timeLeft = pauseTime;
         timerStarted = true;
-        atTarget = true;
+        AtTarget = true;
     }
 
     // start moving to next node; returns true if there was another step to go to, false if not
@@ -83,7 +88,7 @@ public class RequestPip : MonoBehaviour
             return false;
         }
         currentTarget.Item1.SetNeighborMat();
-        atTarget = false;
+        AtTarget = false;
         currentTarget = (steps[stepIdx].Item1, steps[stepIdx].Item2);
         transform.parent = currentTarget.Item1.transform;
         isMoving = true;
@@ -125,7 +130,7 @@ public class RequestPip : MonoBehaviour
         if (IsPlaying)
         {
             IsPlaying = false;
-            if (atTarget) // if we're currently waiting at a node, just pause the timer
+            if (AtTarget) // if we're currently waiting at a node, just pause the timer
                 timerStarted = false;
             else // not at a target, just stop moving
                 isMoving = false;
@@ -134,7 +139,7 @@ public class RequestPip : MonoBehaviour
         else
         {
             IsPlaying = true;
-            if (atTarget) // if waiting at a node, just reset the timer
+            if (AtTarget) // if waiting at a node, just reset the timer
                 StartPause();
             else // not at target, keep moving
                 isMoving = true;
@@ -144,7 +149,7 @@ public class RequestPip : MonoBehaviour
     public void SkipToNext()
     {
         // if we're at a node, then we need to switch to next target and teleport there
-        if (atTarget)
+        if (AtTarget)
         {
             stepIdx++;
             if (stepIdx == steps.Count)
@@ -187,6 +192,31 @@ public class RequestPip : MonoBehaviour
         currentTarget.Item1.SetActiveMat();
     }
 
+    // status functions (for displaying info boxes)
+    
+    public (Node, MsLabel) GetNextDestination()
+    {
+        if (AtTarget) // if we're at a node, we need to calculate next target
+        {
+            int newIdx = stepIdx + 1;
+            if (newIdx == steps.Count)
+                return (null, null);
+            return steps[newIdx];
+        }
+        else // if we're not at a node, we just return the current target we're moving toward
+        {
+            return currentTarget;
+        }
+    }
+
+    public (Node, MsLabel) GetPreviousDestination()
+    {
+        int newIdx = stepIdx - 1;
+        if (newIdx == 0)
+            return (null, null);
+        return steps[newIdx];
+    }
+
     public void CancelRequest()
     {
         StopRequest();
@@ -194,6 +224,7 @@ public class RequestPip : MonoBehaviour
 
     private void OnMouseDown()
     {
+        Debug.Log("We clicked a pip");
         UiManager.PopulateCurrentRequestMenu();
     }
 
