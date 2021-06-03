@@ -12,6 +12,7 @@ public class ExpandableContextMenu : MonoBehaviour
     public GameObject MenuItemPf;   // prefab for the menu item
     public GameObject CloseButton;
     public GameObject Title;
+    public GameObject GraphBase;
 
     private IList<GameObject> menuItems;
 

@@ -6,7 +6,7 @@ using System.Text;
 namespace Assets.Scripts.model
 {
     [Serializable]
-    class MsPath
+    public class MsPath
     {
         public string node;
         public string type;

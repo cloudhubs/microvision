@@ -8,6 +8,8 @@ public class ExpandableContextMenuItem : MonoBehaviour
 {
     public GameObject ToggleButton;
     public GameObject ContentText;
+    public GameObject PlayRequestContainer;
+    public GameObject PlayRequestButton;
 
     public void ToggleContent()
     {

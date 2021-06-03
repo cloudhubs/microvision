@@ -6,6 +6,7 @@ using Assets.Scripts.model;
 public class UIManager : MonoBehaviour
 {
     public GameObject contextMenuObj;
+    public List<MsPath> paths { get; set; }
 
     public void PopulateEndpointContextMenu(Node node)
     {
@@ -21,5 +22,11 @@ public class UIManager : MonoBehaviour
         }
         menu.SetupMenu(contentList);
         menu.SetTitle(node.GetLabelText());
+    }
+
+    public void PopulatePathContextMenu(Node node)
+    {
+        ExpandableContextMenu menu = contextMenuObj.GetComponent<ExpandableContextMenu>();
+        List<(string, string)> contentList = new List<(string, string)>();
     }
 }
