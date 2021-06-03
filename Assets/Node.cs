@@ -18,7 +18,7 @@ public class Node : MonoBehaviour
 
     public Material DefaultMat;
     public Material ActiveMat;
-    public Material NeighborMat;
+    public Material neighborMat;
 
     void Start()
     {
@@ -49,6 +49,7 @@ public class Node : MonoBehaviour
 
     private void OnMouseDown()
     {
+        Debug.Log("CLICK");
         uiManager.PopulateEndpointContextMenu(this);
     }
 
@@ -99,7 +100,7 @@ public class Node : MonoBehaviour
     public void SetNeighborMat()
     {
         MeshRenderer renderer = GetComponent<MeshRenderer>();
-        renderer.material = NeighborMat;
+        renderer.material = neighborMat;
     }
 
 }
