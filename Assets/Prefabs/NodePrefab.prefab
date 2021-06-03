@@ -493,6 +493,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b23e066703a6ff081c4a591d3e53f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DefaultMat: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  ActiveMat: {fileID: 2100000, guid: 11e705b6210576a44bad687a69339f42, type: 2}
+  NeighborMat: {fileID: 2100000, guid: d0715770e4a454a83b98a7592fa20e8c, type: 2}
 --- !u!114 &335021007841477121
 MonoBehaviour:
   m_ObjectHideFlags: 0

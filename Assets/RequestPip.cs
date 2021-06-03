@@ -45,23 +45,29 @@ public class RequestPip : MonoBehaviour
         {
             return;
         }
+        // set up initial step
         this.steps = steps;
-        currentTarget = (steps[0].Item1, steps[0].Item2);
+        currentTarget = (this.steps[0].Item1, this.steps[0].Item2);
         transform.parent = currentTarget.Item1.transform;
         transform.localScale = transform.parent.lossyScale;
+        transform.localPosition = Vector3.zero;
         stepIdx = 0;
+        // set initial mats for all the nodes in the path
+        foreach (Node n in steps.Select(s => s.Item1))
+            n.SetNeighborMat();
+        currentTarget.Item1.SetActiveMat();
         // set up flags
         isMoving = false;
         atTarget = true;
         IsFinished = false;
         IsPlaying = true;
-        transform.localPosition = Vector3.zero;
         StartPause();
     }
 
     // reached a node, start the pause timer
     private void StartPause()
     {
+        currentTarget.Item1.SetActiveMat();
         timeLeft = pauseTime;
         timerStarted = true;
         atTarget = true;
@@ -76,6 +82,7 @@ public class RequestPip : MonoBehaviour
             StopRequest();
             return false;
         }
+        currentTarget.Item1.SetNeighborMat();
         atTarget = false;
         currentTarget = (steps[stepIdx].Item1, steps[stepIdx].Item2);
         transform.parent = currentTarget.Item1.transform;
@@ -104,17 +111,10 @@ public class RequestPip : MonoBehaviour
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, Vector3.zero, step); // move to zero because that's where parent is???
             if (Vector3.Distance(transform.localPosition, Vector3.zero) < 0.001f) // we arrived
             {
-                Debug.Log("reached node, stopping");
                 isMoving = false;
                 StartPause();
             }
-
         }
-    }
-
-    public void PreviousStep()
-    {
-
     }
 
     // playback control functions
@@ -152,6 +152,7 @@ public class RequestPip : MonoBehaviour
                 stepIdx--; // revert back to original target
                 return;
             }
+            currentTarget.Item1.SetNeighborMat();
             currentTarget = steps[stepIdx];
             transform.parent = currentTarget.Item1.transform;
             transform.localPosition = Vector3.zero;
@@ -165,6 +166,7 @@ public class RequestPip : MonoBehaviour
         // no matter what, always start the timer again (if we are playing) since we are now at a new node
         if (IsPlaying)
             StartPause();
+        currentTarget.Item1.SetActiveMat();
     }
 
     public void SkipToPrev()
@@ -176,11 +178,13 @@ public class RequestPip : MonoBehaviour
             stepIdx++; // revert to original target
             return;
         }
+        currentTarget.Item1.SetNeighborMat();
         currentTarget = steps[stepIdx];
         transform.parent = currentTarget.Item1.transform;
         transform.localPosition = Vector3.zero;
         if (IsPlaying)
             StartPause();
+        currentTarget.Item1.SetActiveMat();
     }
 
     public void CancelRequest()
@@ -196,6 +200,8 @@ public class RequestPip : MonoBehaviour
 
     private void StopRequest()
     {
+        foreach (Node n in steps.Select(s => s.Item1))
+            n.SetDefaultMat();
         timerStarted = false;
         isMoving = false;
         IsFinished = true;

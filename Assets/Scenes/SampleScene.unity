@@ -166,7 +166,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextMenuObj: {fileID: 746954158}
   menu: {fileID: 0}
-  RequestController: {fileID: 657041888}
+  RequestControllerObj: {fileID: 657041888}
+  RequestController: {fileID: 0}
 --- !u!1 &194365000
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,7 +418,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 386350104}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 657041892}
+        m_MethodName: PlayPauseRequest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &386350104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1218,7 +1230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &634356168
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1311,13 +1323,14 @@ GameObject:
   - component: {fileID: 657041889}
   - component: {fileID: 657041891}
   - component: {fileID: 657041890}
+  - component: {fileID: 657041892}
   m_Layer: 5
   m_Name: RequestControlsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &657041889
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1378,6 +1391,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657041888}
   m_CullTransparentMesh: 0
+--- !u!114 &657041892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657041888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcddc5905b562a147a4bb72ea707295f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentRequest: {fileID: 0}
+  PlayPauseButton: {fileID: 386350101}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1922,7 +1949,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1285247841}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 657041892}
+        m_MethodName: CancelRequest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1285247841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2576,7 +2614,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1494564141}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 657041892}
+        m_MethodName: NextStep
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1494564141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2927,7 +2976,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 1638757472}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -3449,7 +3498,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1798432917}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 657041892}
+        m_MethodName: PrevStep
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1798432917
 MonoBehaviour:
   m_ObjectHideFlags: 0

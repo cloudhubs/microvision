@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.model;
 using System.Linq;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -21,13 +22,18 @@ public class UIManager : MonoBehaviour
         gameObject.tag = "ui_manager";
         menu = contextMenuObj.GetComponent<ExpandableContextMenu>();
         RequestController = RequestControllerObj.GetComponent<RequestController>();
+        menu.MenuClosedEvent.AddListener(menuClosedListener);
     }
 
     public void PopulateEndpointContextMenu(Node node)
     {
+        if (CurrentNode != null)
+            CurrentNode.SetDefaultMat();
         if (isRequestActive())
             return;
         CurrentNode = node;
+        CurrentNode.SetActiveMat();
+        SetNeighborMats(true);
         List<(string, string)> contentList = new List<(string, string)>();
         foreach (MsLabel endpoint in node.endpoints)
         {
@@ -77,6 +83,36 @@ public class UIManager : MonoBehaviour
         menu.SetIsEndpointMode(false);
     }
 
+    // Set neighbor materials. If isActive, set as neighbor mats; else, revert to default mats
+    private void SetNeighborMats(bool isActive)
+    {
+        if (graph == null)
+            graph = GameObject.FindWithTag("graph").GetComponent<Graph>();
+        if (CurrentNode == null)
+            return;
+        
+        Dictionary<(string, string), GameObject> edges = graph.edges;
+        Dictionary<string, Node> nodes = graph.nodes;
+        List<Node> neighborNodes = edges.Select(e => e.Key).Where(key => key.Item1 == CurrentNode.GetLabelText()).Select(key => nodes[key.Item2]).ToList();
+        List<Node> otherNodes = nodes.Values.Except(neighborNodes).ToList();
+        // color the neighbors
+        foreach (var neighbor in neighborNodes)
+        {
+            if (isActive)
+                neighbor.SetNeighborMat();
+            else
+                neighbor.SetDefaultMat();
+        }
+        // color non-neighbors
+        foreach (var other in otherNodes)
+            other.SetDefaultMat();
+        // color current node
+        if (isActive)
+            CurrentNode.SetActiveMat();
+        else
+            CurrentNode.SetDefaultMat();
+    }
+
     public void PopulateCurrentRequestMenu()
     {
         // TODO: stuff
@@ -97,15 +133,22 @@ public class UIManager : MonoBehaviour
             return false; // request already exists and is not finished
         if (CurrentRequestPip != null && CurrentRequestPip.IsFinished)
             Destroy(CurrentRequestPip);
-
+        menu.CloseMenu();
+        
         CurrentRequestPip = request;
         RequestController.SetCurrentRequest(CurrentRequestPip);
-        menu.CloseMenu();
         return true;
     }
 
     private bool isRequestActive()
     {
         return CurrentRequestPip != null && !CurrentRequestPip.IsFinished;
+    }
+
+    private void menuClosedListener()
+    {
+        if (isRequestActive())
+            return; // do nothing, don't mess with mats while request is running
+        SetNeighborMats(false); // if no request running and menu is closed, reset all colors
     }
 }
