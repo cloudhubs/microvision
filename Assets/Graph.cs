@@ -20,9 +20,12 @@ public class Graph : MonoBehaviour
     UnconnectedGraph unconnectedGraph;
     ServicesMenu menu;
 
+    // keys nodes by their label (microservice name, basically)
     public Dictionary<string, Node> nodes { get; private set; }
+    // keys edges by their (from, to) labels
     public Dictionary<(string, string), GameObject> edges { get; private set; }
-    public IList<MsLabel> 
+    // list of all paths (contains name, http method, and URL of each path, doesn't actually contain path nodes)
+    public List<List<MsPathStep>> paths { get; private set; }
     ISet<Node> connectedNodes = new HashSet<Node>();
     bool initDone = false;
     
@@ -83,10 +86,7 @@ public class Graph : MonoBehaviour
         }
 
         // process paths
-        foreach (MsPathStep path in data.communication.paths)
-        {
-            
-        }
+        paths = data.communication.paths;
         
         // handle unconnected nodes
         foreach(Node n in nodes.Values)
