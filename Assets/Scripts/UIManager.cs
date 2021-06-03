@@ -27,10 +27,10 @@ public class UIManager : MonoBehaviour
 
     public void PopulateEndpointContextMenu(Node node)
     {
-        if (CurrentNode != null)
-            CurrentNode.SetDefaultMat();
         if (isRequestActive())
             return;
+        if (CurrentNode != null)
+            CurrentNode.SetDefaultMat();
         CurrentNode = node;
         CurrentNode.SetActiveMat();
         SetNeighborMats(true);
@@ -108,12 +108,29 @@ public class UIManager : MonoBehaviour
             contentList.Add((sourceButtonText, sourceContentText));
         }
         menu.SetupMenu(contentList);
+        menu.SetTitle("Current request");
     }
 
     // show the endpoints of a node that are used in the current request
     public void PopulateRequestNodeEndpoints(Node node)
     {
-
+        IEnumerable<MsLabel> relevantEndpoints = CurrentRequestPip.Steps.Where(s => s.Item1.GetLabelText() == node.GetLabelText()).Select(s => s.Item2);
+        if (!relevantEndpoints.Any())
+            return;
+        List<(string, string)> contentList = new List<(string, string)>();
+        foreach (MsLabel endpoint in node.endpoints)
+        {
+            if (relevantEndpoints.Where(re => re.type == endpoint.type && re.path == endpoint.path).Any())
+            {
+                string buttonText = endpoint.type + " " + endpoint.path;
+                string contentText = "Endpoint function: " + endpoint.endpointFunction + "\n" +
+                                     "Arguments: " + endpoint.argument + "\n" +
+                                     "Return type: " + endpoint.msReturn;
+                contentList.Add((buttonText, contentText));
+            }
+        }
+        menu.SetupMenu(contentList);
+        menu.SetTitle("Endpoints used in request - " + node.GetLabelText());
     }
 
     // Set neighbor materials. If isActive, set as neighbor mats; else, revert to default mats

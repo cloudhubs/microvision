@@ -11,7 +11,7 @@ using UnityEngine.Events;
 public class RequestPip : MonoBehaviour
 {
     // step stuff
-    private IList<(Node, MsLabel)> steps;
+    public IList<(Node, MsLabel)> Steps { get; private set; }
     private (Node, MsLabel) currentTarget;
     private int stepIdx;
 
@@ -51,8 +51,8 @@ public class RequestPip : MonoBehaviour
             return;
         }
         // set up initial step
-        this.steps = steps;
-        currentTarget = (this.steps[0].Item1, this.steps[0].Item2);
+        this.Steps = steps;
+        currentTarget = (this.Steps[0].Item1, this.Steps[0].Item2);
         transform.parent = currentTarget.Item1.transform;
         transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
         transform.localPosition = Vector3.zero;
@@ -82,14 +82,14 @@ public class RequestPip : MonoBehaviour
     public bool NextStep()
     {
         stepIdx++;
-        if (stepIdx == steps.Count)
+        if (stepIdx == Steps.Count)
         {
             StopRequest();
             return false;
         }
         currentTarget.Item1.SetNeighborMat();
         AtTarget = false;
-        currentTarget = (steps[stepIdx].Item1, steps[stepIdx].Item2);
+        currentTarget = (Steps[stepIdx].Item1, Steps[stepIdx].Item2);
         transform.parent = currentTarget.Item1.transform;
         isMoving = true;
         return true;
@@ -152,13 +152,13 @@ public class RequestPip : MonoBehaviour
         if (AtTarget)
         {
             stepIdx++;
-            if (stepIdx == steps.Count)
+            if (stepIdx == Steps.Count)
             {
                 stepIdx--; // revert back to original target
                 return;
             }
             currentTarget.Item1.SetNeighborMat();
-            currentTarget = steps[stepIdx];
+            currentTarget = Steps[stepIdx];
             transform.parent = currentTarget.Item1.transform;
             transform.localPosition = Vector3.zero;
         }
@@ -184,7 +184,7 @@ public class RequestPip : MonoBehaviour
             return;
         }
         currentTarget.Item1.SetNeighborMat();
-        currentTarget = steps[stepIdx];
+        currentTarget = Steps[stepIdx];
         transform.parent = currentTarget.Item1.transform;
         transform.localPosition = Vector3.zero;
         if (IsPlaying)
@@ -199,9 +199,9 @@ public class RequestPip : MonoBehaviour
         if (AtTarget) // if we're at a node, we need to calculate next target
         {
             int newIdx = stepIdx + 1;
-            if (newIdx == steps.Count)
+            if (newIdx == Steps.Count)
                 return (null, null);
-            return steps[newIdx];
+            return Steps[newIdx];
         }
         else // if we're not at a node, we just return the current target we're moving toward
         {
@@ -214,7 +214,7 @@ public class RequestPip : MonoBehaviour
         int newIdx = stepIdx - 1;
         if (newIdx == 0)
             return (null, null);
-        return steps[newIdx];
+        return Steps[newIdx];
     }
 
     public void CancelRequest()
@@ -231,7 +231,7 @@ public class RequestPip : MonoBehaviour
 
     private void StopRequest()
     {
-        foreach (Node n in steps.Select(s => s.Item1))
+        foreach (Node n in Steps.Select(s => s.Item1))
             n.SetDefaultMat();
         timerStarted = false;
         isMoving = false;
