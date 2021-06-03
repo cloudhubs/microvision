@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.model;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -10,10 +11,24 @@ public class ExpandableContextMenuItem : MonoBehaviour
     public GameObject ContentText;
     public GameObject PlayRequestContainer;
     public GameObject PlayRequestButton;
+    public GameObject RequestPf;
+
+    public UIManager UiManager;
+
+    public IList<(Node, MsLabel)> request;
+
+    public bool HasRequest { get; private set; }
+
+    void Start()
+    {
+        if (UiManager == null)
+            UiManager = GameObject.FindWithTag("ui_manager").GetComponent<UIManager>();
+    }
 
     public void ToggleContent()
     {
         ContentText.SetActive(!ContentText.activeSelf);
+        PlayRequestContainer.SetActive(HasRequest && !PlayRequestContainer.activeSelf);
         Utils.RefreshLayoutGroupsImmediateAndRecursive(gameObject);
     }
 
@@ -28,5 +43,20 @@ public class ExpandableContextMenuItem : MonoBehaviour
         TextMeshProUGUI text = ContentText.GetComponent<TextMeshProUGUI>();
         text.SetText(contentText);
     }
-    
+
+    public void SetRequest(IList<(Node, MsLabel)> requestSteps)
+    {
+        HasRequest = true;
+        request = requestSteps;
+    }
+
+    public void PlayRequest()
+    {
+        GameObject requestObj = Instantiate(RequestPf, transform);
+        RequestPip currentRequest = requestObj.GetComponent<RequestPip>();
+        UiManager.SetCurrentRequest(currentRequest);
+        currentRequest.Init(request);
+
+    }
+
 }

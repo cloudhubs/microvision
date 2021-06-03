@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,16 +9,23 @@ using UnityEngine;
 
 public class RequestPip : MonoBehaviour
 {
-    private IList<GameObject> steps;
-    private Node someNode;
+    // step stuff
+    private IList<(Node, MsLabel)> steps;
+    private (Node, MsLabel) currentTarget;
     private int stepIdx;
+
+    // counter stuff
     private float pauseTime = 3f;
-    private bool isMoving;
-    private bool timerStarted = false;
     private float speed = 1.0f;
     private float timeLeft = 999f;
 
-    public void Init(IList<GameObject> steps)
+    // flags
+    private bool isMoving;
+    private bool timerStarted;
+    private bool atTarget;
+    public bool finished { get; set; }
+
+    public void Init(IList<(Node, MsLabel)> steps)
     {
         if (!steps.Any()) // no nodes in list, do nothing
         {
@@ -25,22 +33,14 @@ public class RequestPip : MonoBehaviour
         }
         this.steps = steps;
         stepIdx = 0;
+        // set up flags
         isMoving = false;
-        Node first = steps[0].GetComponent<Node>();
-        Debug.Log(first.GetLabelText());
-        transform.parent = first.transform;
+        atTarget = true;
+        finished = false;
+        currentTarget = (steps[0].Item1, steps[0].Item2);
+        transform.parent = currentTarget.Item1.transform;
         transform.localPosition = Vector3.zero;
-        //timer = new Timer(pauseTime);
-        //timer.Elapsed += OnPauseTimer;
-        //timer.AutoReset = false;
-        //timer.Enabled = true;
-        //// TEMP!!!
-        //NextStep();
         StartPause();
-        Debug.Log("Node global position: " + transform.parent.position.ToString());
-        Debug.Log("Pip global position: " + transform.position.ToString());
-        Debug.Log("Pip local position: " + transform.localPosition.ToString());
-        //someNode = steps[1].GetComponent<Node>();
     }
 
     //// pause timer expired, go to next step
@@ -64,6 +64,7 @@ public class RequestPip : MonoBehaviour
     {
         timeLeft = pauseTime;
         timerStarted = true;
+        atTarget = true;
     }
 
     // start moving to next node; returns true if there was another step to go to, false if not
@@ -75,9 +76,9 @@ public class RequestPip : MonoBehaviour
             StopRequest();
             return false;
         }
-        someNode = steps[stepIdx].GetComponent<Node>();
-        Node next = steps[stepIdx].GetComponent<Node>();
-        transform.parent = next.transform;
+        atTarget = false;
+        currentTarget = (steps[stepIdx].Item1, steps[stepIdx].Item2);
+        transform.parent = currentTarget.Item1.transform;
         isMoving = true;
         return true;
     }

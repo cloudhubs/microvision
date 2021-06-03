@@ -8,6 +8,13 @@ public class UIManager : MonoBehaviour
     public GameObject contextMenuObj;
     public List<MsPath> paths { get; set; }
 
+    public RequestPip CurrentRequestPip { get; private set; }
+
+    void Start()
+    {
+        gameObject.tag = "ui_manager";
+    }
+
     public void PopulateEndpointContextMenu(Node node)
     {
         ExpandableContextMenu menu = contextMenuObj.GetComponent<ExpandableContextMenu>();
@@ -28,5 +35,14 @@ public class UIManager : MonoBehaviour
     {
         ExpandableContextMenu menu = contextMenuObj.GetComponent<ExpandableContextMenu>();
         List<(string, string)> contentList = new List<(string, string)>();
+    }
+
+    public void SetCurrentRequest(RequestPip request)
+    {
+        if (CurrentRequestPip != null && !CurrentRequestPip.finished)
+        {
+            return; // request already exists and is not finished
+        }
+        CurrentRequestPip = request;
     }
 }

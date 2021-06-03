@@ -124,17 +124,17 @@ public class Graph : MonoBehaviour
                 unconnectedGraph.gameObject.transform.localPosition = new Vector3(xMax + 5f, 0f, 0f);
                 if (Input.GetKeyDown("v"))
                 {
-                    if (currentRequest == null)
-                    {
-                        List<GameObject> requestNodes = new List<GameObject>();
-                        requestNodes.Add(nodes["cms"].gameObject);
-                        requestNodes.Add(nodes["ems"].gameObject);
-                        requestNodes.Add(nodes["qms"].gameObject);
-                        requestNodes.Add(nodes["vms"].gameObject);
-                        currentRequestObject = Instantiate(requestpf, transform);
-                        currentRequest = currentRequestObject.GetComponent<RequestPip>();
-                        currentRequest.Init(requestNodes);
-                    }
+                    //if (currentRequest == null)
+                    //{
+                    //    List<GameObject> requestNodes = new List<GameObject>();
+                    //    requestNodes.Add(nodes["cms"].gameObject);
+                    //    requestNodes.Add(nodes["ems"].gameObject);
+                    //    requestNodes.Add(nodes["qms"].gameObject);
+                    //    requestNodes.Add(nodes["vms"].gameObject);
+                    //    currentRequestObject = Instantiate(requestpf, transform);
+                    //    currentRequest = currentRequestObject.GetComponent<RequestPip>();
+                    //    currentRequest.Init(requestNodes);
+                    //}
                     //Vector3 otherSum = new Vector3(0f, 0f, 0f);
                     //foreach (Node n in connectedNodes)
                     //{
