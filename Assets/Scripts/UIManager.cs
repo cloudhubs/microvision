@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
 {
     public GameObject contextMenuObj;
     public ExpandableContextMenu menu;
+    public GameObject RequestControllerObj;
+    public RequestController RequestController;
 
     public RequestPip CurrentRequestPip { get; private set; }
     public Node CurrentNode { get; private set; }
@@ -18,6 +20,7 @@ public class UIManager : MonoBehaviour
     {
         gameObject.tag = "ui_manager";
         menu = contextMenuObj.GetComponent<ExpandableContextMenu>();
+        RequestController = RequestControllerObj.GetComponent<RequestController>();
     }
 
     public void PopulateEndpointContextMenu(Node node)
@@ -92,16 +95,17 @@ public class UIManager : MonoBehaviour
     {
         if (isRequestActive())
             return false; // request already exists and is not finished
-        if (CurrentRequestPip != null && CurrentRequestPip.isFinished)
+        if (CurrentRequestPip != null && CurrentRequestPip.IsFinished)
             Destroy(CurrentRequestPip);
 
         CurrentRequestPip = request;
+        RequestController.SetCurrentRequest(CurrentRequestPip);
         menu.CloseMenu();
         return true;
     }
 
     private bool isRequestActive()
     {
-        return CurrentRequestPip != null && !CurrentRequestPip.isFinished;
+        return CurrentRequestPip != null && !CurrentRequestPip.IsFinished;
     }
 }

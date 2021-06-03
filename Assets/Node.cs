@@ -16,6 +16,9 @@ public class Node : MonoBehaviour
     GameObject uiManagerObj;
     UIManager uiManager;
 
+    public Material DefaultMat;
+    public Material ActiveMat;
+    public Material NeighborMat;
 
     void Start()
     {
@@ -82,5 +85,21 @@ public class Node : MonoBehaviour
         //transform.GetChild(0).GetComponent<TextMesh>().text = label;
         transform.GetChild(0).GetComponent<TMPro.TextMeshPro>().text = label;
     }
-    
+
+    public void SetDefaultMat()
+    {
+        MeshRenderer renderer = GetComponent<MeshRenderer>();
+        renderer.material = DefaultMat;
+    }
+    public void SetActiveMat()
+    {
+        MeshRenderer renderer = GetComponent<MeshRenderer>();
+        renderer.material = ActiveMat;
+    }
+    public void SetNeighborMat()
+    {
+        MeshRenderer renderer = GetComponent<MeshRenderer>();
+        renderer.material = NeighborMat;
+    }
+
 }

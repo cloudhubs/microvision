@@ -15,8 +15,6 @@ public class ProphetCaller : MonoBehaviour
     void Start()
     {
         ProphetData data = CallProphet();
-        testText.SetText("Did you ever hear the tragedy of Darth Plageuis the Wise?");
-        string failz = "";
         for (int i = 0; i < data.communication.nodes.Count; i++)
         {
             // create the cube (node), and a child holder for the node label

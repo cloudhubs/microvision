@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RequestPip : MonoBehaviour
 {
@@ -23,14 +24,19 @@ public class RequestPip : MonoBehaviour
     private bool isMoving;
     private bool timerStarted;
     private bool atTarget;
-    public bool isFinished { get; set; }
+    public bool IsPlaying { get; private set; }
+    public bool IsFinished { get; set; }
 
     public UIManager UiManager;
 
-    void Start()
+    public UnityEvent RequestFinishedEvent { get; private set; }
+
+    void Awake()
     {
         if (UiManager == null)
             UiManager = GameObject.FindWithTag("ui_manager").GetComponent<UIManager>();
+        if (RequestFinishedEvent == null)
+            RequestFinishedEvent = new UnityEvent();
     }
 
     public void Init(IList<(Node, MsLabel)> steps)
@@ -47,26 +53,11 @@ public class RequestPip : MonoBehaviour
         // set up flags
         isMoving = false;
         atTarget = true;
-        isFinished = false;
+        IsFinished = false;
+        IsPlaying = true;
         transform.localPosition = Vector3.zero;
         StartPause();
     }
-
-    //// pause timer expired, go to next step
-    //private void OnPauseTimer(object source, ElapsedEventArgs e)
-    //{
-    //    Debug.Log("Timer expired");
-    //    timer.Stop(); // stop the pause timer while we travel to next step
-    //    bool isNext = NextStep(); // travel to next step
-    //    Debug.Log("someNode name " + someNode.GetLabelText());
-    //    Debug.Log("someNOde position " + someNode.transform.position.ToString());
-    //    Debug.Log("Next step done?");
-    //    if (isNext)
-    //    {
-    //        // temp!
-    //        timer.Start();
-    //    }
-    //}
 
     // reached a node, start the pause timer
     private void StartPause()
@@ -126,6 +117,77 @@ public class RequestPip : MonoBehaviour
 
     }
 
+    // playback control functions
+
+    public void TogglePlayPause()
+    {
+        // playing, so pause the request
+        if (IsPlaying)
+        {
+            IsPlaying = false;
+            if (atTarget) // if we're currently waiting at a node, just pause the timer
+                timerStarted = false;
+            else // not at a target, just stop moving
+                isMoving = false;
+        }
+        // paused, so play the request
+        else
+        {
+            IsPlaying = true;
+            if (atTarget) // if waiting at a node, just reset the timer
+                StartPause();
+            else // not at target, keep moving
+                isMoving = true;
+        }
+    }
+
+    public void SkipToNext()
+    {
+        // if we're at a node, then we need to switch to next target and teleport there
+        if (atTarget)
+        {
+            stepIdx++;
+            if (stepIdx == steps.Count)
+            {
+                stepIdx--; // revert back to original target
+                return;
+            }
+            currentTarget = steps[stepIdx];
+            transform.parent = currentTarget.Item1.transform;
+            transform.localPosition = Vector3.zero;
+        }
+        // if we're moving toward a node, don't switch targets; just teleport to the current target
+        else
+        {
+            transform.localPosition = Vector3.zero;
+            isMoving = false; // stop moving in case it doesn't get detected
+        }
+        // no matter what, always start the timer again (if we are playing) since we are now at a new node
+        if (IsPlaying)
+            StartPause();
+    }
+
+    public void SkipToPrev()
+    {
+        // don't need to check if we're at a target or moving; the previous node is always just the stepIdx below us
+        stepIdx--;
+        if (stepIdx < 0)
+        {
+            stepIdx++; // revert to original target
+            return;
+        }
+        currentTarget = steps[stepIdx];
+        transform.parent = currentTarget.Item1.transform;
+        transform.localPosition = Vector3.zero;
+        if (IsPlaying)
+            StartPause();
+    }
+
+    public void CancelRequest()
+    {
+        StopRequest();
+    }
+
     private void OnMouseDown()
     {
         UiManager.PopulateCurrentRequestMenu();
@@ -136,7 +198,8 @@ public class RequestPip : MonoBehaviour
     {
         timerStarted = false;
         isMoving = false;
-        isFinished = true;
+        IsFinished = true;
+        RequestFinishedEvent.Invoke();
         Destroy(gameObject);
     }
 

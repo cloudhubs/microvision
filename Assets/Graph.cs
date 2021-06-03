@@ -100,8 +100,8 @@ public class Graph : MonoBehaviour
         }
 
         // send the nodes over to the menu to display in a list
-        menu = GameObject.Find("ServicesMenu").GetComponent<ServicesMenu>();
-        menu.InitializeServiceList(nodes);
+        //menu = GameObject.Find("ServicesMenu").GetComponent<ServicesMenu>();
+        //menu.InitializeServiceList(nodes);
         initDone = true;
     }
 

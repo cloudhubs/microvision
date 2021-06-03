@@ -7,7 +7,6 @@ using UnityEngine.XR.ARSubsystems;
 [RequireComponent(typeof(ARRaycastManager))] // automagically create the manager when we put this script on an object
 public class GraphSpawner : MonoBehaviour
 {
-
     public GameObject toSpawn;
     private GameObject spawnedObject;
     private ARRaycastManager raycaster;
@@ -54,6 +53,12 @@ public class GraphSpawner : MonoBehaviour
             spawnedObject = Instantiate(toSpawn, hitPose.position, hitPose.rotation);
             // stop looking for planes
             isSearching = false;
+            planeManager.planePrefab.SetActive(false);
+            var planeList = planeManager.trackables;
+            foreach (var plane in planeList)
+            {
+                plane.gameObject.SetActive(false);
+            }
         }
     }
 }
