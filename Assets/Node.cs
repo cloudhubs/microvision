@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour
 {
@@ -35,9 +36,16 @@ public class Node : MonoBehaviour
             edge.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             SpringJoint sj = joints[i];
             GameObject target = sj.connectedBody.gameObject;
+            if (sj.spring > 0)
+            {
+                sj.spring = sj.spring - 0.001f;
+                if (sj.spring < 0)
+                {
+                    sj.spring = 0;
+                }
+            }
             edge.transform.LookAt(target.transform);
             Vector3 ls = edge.transform.localScale;
-            //////ls.z = Vector3.Distance(transform.position, target.transform.position);
             ls.z = Vector3.Distance(transform.localPosition, target.transform.localPosition);
             edge.transform.localScale = ls;
             edge.transform.position = new Vector3((transform.position.x + target.transform.position.x) / 2,
@@ -49,7 +57,18 @@ public class Node : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("CLICK");
+        // Check if the mouse was clicked over a UI element
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+        if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began))
+        {
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+            {
+                return;
+            }
+        }
         uiManager.PopulateEndpointContextMenu(this);
     }
 
@@ -60,19 +79,19 @@ public class Node : MonoBehaviour
 
     public GameObject AddEdge(Node n)
     {
-        SpringJoint sj = gameObject.AddComponent<SpringJoint>();
-        sj.autoConfigureConnectedAnchor = false;
-        sj.anchor = new Vector3(0, 0.5f, 0);
-        sj.connectedAnchor = new Vector3(0, 0, 0);
-        sj.enableCollision = true;
-        sj.connectedBody = n.GetComponent<Rigidbody>();
-        sj.connectedBody.transform.parent = transform.parent;
-        //GameObject edge = Instantiate(this.edgepf, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
-        //edge.transform.parent = transform.parent;
+        SpringJoint joint = gameObject.AddComponent<SpringJoint>();
+        joint.autoConfigureConnectedAnchor = false;
+        joint.anchor = new Vector3(0, 0.5f, 0);
+        joint.connectedAnchor = new Vector3(0, 0, 0);
+        joint.enableCollision = true;
+        joint.connectedBody = n.GetComponent<Rigidbody>();
+        joint.connectedBody.transform.parent = transform.parent;
+        joint.damper = 5f;
+        joint.spring = 10f;
         GameObject edge = Instantiate(this.edgepf, transform.parent);
         edge.transform.localPosition = transform.localPosition;
         edges.Add(edge);
-        joints.Add(sj);
+        joints.Add(joint);
         return edge;
     }
 

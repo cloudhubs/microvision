@@ -47,6 +47,6 @@ MonoBehaviour:
   edgepf: {fileID: 2006701754031461468, guid: 285eaa547166bce5bbdeb2d0d90b4b4c, type: 3}
   requestpf: {fileID: 1146233558338359423, guid: 1b52da2e2aee142458ee5c6379edd18f,
     type: 3}
-  width: 3
-  length: 3
-  height: 3
+  width: 6
+  length: 6
+  height: 6

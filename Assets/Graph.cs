@@ -235,7 +235,7 @@ public class Graph : MonoBehaviour
 
     private ProphetData CallProphet()
     {
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(System.String.Format("http://demo1986600.mockable.io/"));
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(System.String.Format("http://demo1986600.mockable.io/train"));
         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
         StreamReader reader = new StreamReader(response.GetResponseStream());
         string jsonResponse = reader.ReadToEnd();

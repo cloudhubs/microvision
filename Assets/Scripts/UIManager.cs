@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
         if (isRequestActive())
         {
             // try to populate this node's endpoints IF it is relevant to the current request
-            PopulateRequestNodeEndpoints(node);
+            PopulateRequestNodeEndpointsContextMenu(node);
             return;
         }
         if (CurrentNode != null)
@@ -115,7 +115,7 @@ public class UIManager : MonoBehaviour
     }
 
     // show the endpoints of a node that are used in the current request
-    public void PopulateRequestNodeEndpoints(Node node)
+    public void PopulateRequestNodeEndpointsContextMenu(Node node)
     {
         IEnumerable<MsLabel> relevantEndpoints = CurrentRequestPip.Steps.Where(s => s.Item1.GetLabelText() == node.GetLabelText()).Select(s => s.Item2);
         if (!relevantEndpoints.Any())

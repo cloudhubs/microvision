@@ -113,7 +113,7 @@ public class RequestPip : MonoBehaviour
         if (isMoving)
         {
             float step = speed * Time.deltaTime;
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Vector3.zero, step); // move to zero because that's where parent is???
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, Vector3.zero, step); // move to local position zero because that's where the parent is
             if (Vector3.Distance(transform.localPosition, Vector3.zero) < 0.001f) // we arrived
             {
                 isMoving = false;
@@ -202,7 +202,7 @@ public class RequestPip : MonoBehaviour
         if (AtTarget) // if we're at a node, we need to calculate next target
         {
             int newIdx = stepIdx + 1;
-            if (newIdx == Steps.Count)
+            if (newIdx >= Steps.Count)
                 return (null, null);
             return Steps[newIdx];
         }
@@ -227,10 +227,8 @@ public class RequestPip : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("We clicked a pip");
         UiManager.PopulateCurrentRequestMenu();
     }
-
 
     private void StopRequest()
     {
