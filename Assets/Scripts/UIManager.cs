@@ -189,7 +189,7 @@ public class UIManager : MonoBehaviour
         menu.CloseMenu();
         SetNeighborMats(false);
         CurrentRequestPip = request;
-        CurrentRequestPip.NodeReachedEvent.AddListener(requestReachedNodeListener);
+        CurrentRequestPip.StatusChangedEvent.AddListener(requestStatusChangeListener);
         RequestController.SetCurrentRequest(CurrentRequestPip);
         return true;
     }
@@ -207,7 +207,7 @@ public class UIManager : MonoBehaviour
         SetNeighborMats(false); // if no request running and menu is closed, reset all colors
     }
 
-    private void requestReachedNodeListener()
+    private void requestStatusChangeListener()
     {
         if (menu.gameObject.activeSelf)
         {

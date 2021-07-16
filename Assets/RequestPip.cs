@@ -30,7 +30,7 @@ public class RequestPip : MonoBehaviour
     public UIManager UiManager;
 
     public UnityEvent RequestFinishedEvent { get; private set; }
-    public UnityEvent NodeReachedEvent { get; private set; }
+    public UnityEvent StatusChangedEvent { get; private set; }
 
     void Awake()
     {
@@ -38,8 +38,8 @@ public class RequestPip : MonoBehaviour
             UiManager = GameObject.FindWithTag("ui_manager").GetComponent<UIManager>();
         if (RequestFinishedEvent == null)
             RequestFinishedEvent = new UnityEvent();
-        if (NodeReachedEvent == null)
-            NodeReachedEvent = new UnityEvent();
+        if (StatusChangedEvent == null)
+            StatusChangedEvent = new UnityEvent();
     }
 
     // Handling movement of the pip
@@ -92,6 +92,7 @@ public class RequestPip : MonoBehaviour
         currentTarget = (Steps[stepIdx].Item1, Steps[stepIdx].Item2);
         transform.parent = currentTarget.Item1.transform;
         isMoving = true;
+        StatusChangedEvent.Invoke();
         return true;
     }
 
@@ -117,7 +118,7 @@ public class RequestPip : MonoBehaviour
             if (Vector3.Distance(transform.localPosition, Vector3.zero) < 0.001f) // we arrived
             {
                 isMoving = false;
-                NodeReachedEvent.Invoke();
+                StatusChangedEvent.Invoke();
                 StartPause();
             }
         }
@@ -168,12 +169,13 @@ public class RequestPip : MonoBehaviour
         {
             transform.localPosition = Vector3.zero;
             isMoving = false; // stop moving in case it doesn't get detected
+            AtTarget = true; // we skipped to target, so obviously we're there
         }
         // no matter what, always start the timer again (if we are playing) since we are now at a new node
         if (IsPlaying)
             StartPause();
         currentTarget.Item1.SetActiveMat();
-        NodeReachedEvent.Invoke();
+        StatusChangedEvent.Invoke();
     }
 
     public void SkipToPrev()
@@ -192,7 +194,8 @@ public class RequestPip : MonoBehaviour
         if (IsPlaying)
             StartPause();
         currentTarget.Item1.SetActiveMat();
-        NodeReachedEvent.Invoke();
+        AtTarget = true; // we skipped to target, so obviously we're there
+        StatusChangedEvent.Invoke();
     }
 
     // status functions (for displaying info boxes)

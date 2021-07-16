@@ -87,7 +87,7 @@ public class Node : MonoBehaviour
         joint.connectedBody = n.GetComponent<Rigidbody>();
         joint.connectedBody.transform.parent = transform.parent;
         joint.damper = 5f;
-        joint.spring = 10f;
+        joint.spring = 20f;
         GameObject edge = Instantiate(this.edgepf, transform.parent);
         edge.transform.localPosition = transform.localPosition;
         edges.Add(edge);
